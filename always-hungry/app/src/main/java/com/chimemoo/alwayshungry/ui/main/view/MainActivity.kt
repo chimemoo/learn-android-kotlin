@@ -2,24 +2,23 @@ package com.chimemoo.alwayshungry.ui.main.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.chimemoo.alwayshungry.R
 import com.chimemoo.alwayshungry.data.api.ApiHelper
 import com.chimemoo.alwayshungry.data.api.ApiService
 import com.chimemoo.alwayshungry.ui.base.ViewModelFactory
-import com.chimemoo.alwayshungry.ui.main.adapter.MainAdapter
 import com.chimemoo.alwayshungry.ui.main.viewmodel.MainViewModel
 import com.chimemoo.alwayshungry.utils.Status
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +49,20 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getImage().observe(this, Observer {
             when(it.status) {
                 Status.SUCCESS -> {
-                    iv_food.visibility = View.VISIBLE
-                    pb_image.visibility = View.GONE
-                    Glide.with(this)
+                    Picasso
+                        .get()
                         .load(it.data?.image)
-                        .into(iv_food)
+                        .into(iv_food, object : Callback {
+                            override fun onSuccess() {
+                                iv_food.visibility = View.VISIBLE
+                                pb_image.visibility = View.GONE
+                            }
+
+                            override fun onError(e: Exception?) {
+                                Toast.makeText(this@MainActivity, "Failed to load image", Toast.LENGTH_SHORT).show()
+                            }
+
+                        })
                 }
                 Status.LOADING -> {
                     pb_image.visibility = View.VISIBLE

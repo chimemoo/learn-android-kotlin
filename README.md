@@ -7,3 +7,11 @@ My learning repository of develop simple kotlin app
    What i learned ?  
    - Implement mvvm
    - Using Piccaso
+   <br/><br/>
+
+2. Whats Anime<br/>
+   <img src="assets-markdown/whats-anime.jpg" width="200"/><br/>
+   Is app for scanning anime image and get detail of the anime using api from https://trace.moe/api/search 
+   What i learned ?  
+   - Implement mvvm
+   - Using Camera and Permission
